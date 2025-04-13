@@ -1,0 +1,24 @@
+on:
+  - workflow_dispatch
+
+jobs:
+  build:
+    outputs:
+      hashes: ${{ steps.hash.outputs.hashes }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+
+      - name: Go build
+        id: build
+        shell: bash
+        run: |
+          go build -o out/hello-world
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifactz
+          path: out/
