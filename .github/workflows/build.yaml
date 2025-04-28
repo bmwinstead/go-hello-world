@@ -3,6 +3,9 @@ on:
 
 jobs:
   build:
+    permissions:
+      id-token: write
+      attestations: write
     outputs:
       hashes: ${{ steps.hash.outputs.hashes }}
     runs-on: ubuntu-latest
@@ -18,7 +21,13 @@ jobs:
           go build -o out/hello-world
 
       - name: Upload Artifacts
+        id: upload
         uses: actions/upload-artifact@v4
         with:
           name: artifactz
           path: out/
+
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: artifactz
+          subject-digest: sha256:${{ steps.upload.outputs.artifact-digest }}
