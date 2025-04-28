@@ -20,12 +20,20 @@ jobs:
         run: |
           go build -o out/hello-world
 
+      - name: Calculate Hashes
+        id: hash
+        shell: bash
+        run: |
+          pushd out/
+          find . -type f | xargs sha256sum >> sha256sums.txt
+          popd
+
       - name: Upload Artifacts
         id: upload
         uses: actions/upload-artifact@v4
         with:
           name: artifactz
-          path: out/
+          path: out/*
 
       - uses: actions/attest-build-provenance@v2
         with:
