@@ -29,5 +29,5 @@ jobs:
 
       - uses: actions/attest-build-provenance@v2
         with:
-          subject-path: artifactz
+          subject-name: artifactz
           subject-digest: sha256:${{ steps.upload.outputs.artifact-digest }}
